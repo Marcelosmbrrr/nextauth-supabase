@@ -1,17 +1,18 @@
-import NextAuth from "next-auth"
+import NextAuth, { DefaultSession } from "next-auth"
 import { JWT } from "next-auth/jwt"
-import { User, Role } from "@prisma/client"
+import { Role } from "@prisma/client"
 
 // https://next-auth.js.org/getting-started/typescript#main-module
 
-// Setting custom types
+export type ExtendedUser = DefaultSession["user"] & {
+    role: Role
+}
 
 declare module "next-auth" {
     /**
      * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
      */
     interface Session {
-        user: User,
-        role: Role
+        user: ExtendedUser
     }
 }
