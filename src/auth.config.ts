@@ -2,7 +2,7 @@ import type { NextAuthConfig } from 'next-auth';
 // import bcrypt from 'bcrypt';
 import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from './schemas/schemas';
-import { db } from './services/database/database';
+import { getUserByUsername } from './actions/user';
 
 export default {
     providers: [
@@ -15,11 +15,7 @@ export default {
 
                     const { username, password } = validatedFields.data;
 
-                    const user = await db.user.findUnique({
-                        where: {
-                            username: username
-                        }
-                    })
+                    const user = await getUserByUsername(username);
 
                     if (!user) {
                         return null;

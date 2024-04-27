@@ -4,13 +4,38 @@ const db = new PrismaClient();
 
 async function main() {
 
-    await db.user.create({
-        data: {
-            name: 'Marcelo Moreira',
-            username: 'marcelosmbr',
-            email: 'development.smbr@gmail.com',
-            password: '123123',
-        }
+    await db.role.createMany({
+        data: [
+            {
+                name: 'admin',
+                read: true,
+                write: true
+            },
+            {
+                name: 'user',
+                read: true,
+                write: false
+            }
+        ]
+    })
+
+    await db.user.createMany({
+        data: [
+            {
+                name: 'Marcelo Moreira',
+                roleId: 1,
+                username: 'marcelosmbr',
+                email: 'development.smbr@gmail.com',
+                password: '123123',
+            },
+            {
+                name: 'User Guest',
+                roleId: 2,
+                username: 'guest',
+                email: 'guest@gmail.com',
+                password: '123123',
+            }
+        ]
     })
 
 }

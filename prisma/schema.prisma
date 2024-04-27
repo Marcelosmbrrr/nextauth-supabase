@@ -12,15 +12,25 @@ generator client {
 // https://authjs.dev/getting-started/adapters/prisma
 
 model User {
-  id       String    @id @default(cuid())
+  id       String   @id @default(cuid())
+  roleId   Int
   name     String
-  username String    @unique
-  email    String    @unique
+  username String   @unique
+  email    String   @unique
   password String
   Account  Account?
+  Role     Role     @relation(fields: [roleId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id    Int     @id @default(autoincrement())
+  name  String
+  read  Boolean
+  write Boolean
+  User  User[]
 }
 
 model Account {
